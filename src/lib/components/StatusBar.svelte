@@ -1,20 +1,66 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type BubbleSort from '../../routes/sorting/bubble/algorithm';
 
 	export let algo: BubbleSort;
 	export let onUpdate: () => void = () => {};
 
-	let status = 'Ready';
+    function step(){
+        inputVal = ":step"
+        submitInput()
+    }
 
-	function step() {
-		({ status } = algo.step());
-		onUpdate();
-		algo = algo;
+	// INPUT STUFF
+	onMount(() => {
+		function keypressHandler(e: KeyboardEvent) {
+			if (e.key === ':' && !inputOpen) openInput();
+			if (e.key === 'c' && e.ctrlKey && inputOpen) closeInput();
+		}
+
+		window.addEventListener('keyup', keypressHandler);
+
+		return () => window.removeEventListener('keyup', keypressHandler);
+	});
+
+	let inputEl: HTMLElement;
+	let inputVal: string = '';
+
+	let inputOpen = false;
+	function openInput() {
+		inputOpen = true;
+		inputVal = ':';
+	}
+
+	function closeInput() {
+		inputOpen = false;
+		inputVal = '';
+	}
+
+	function onInputChange() {
+		if (inputOpen && !inputVal.startsWith(':')) closeInput();
+	}
+
+	function submitInput() {
+		algo.exec(inputVal.substring(1));
+        onUpdate();
+        algo = algo;
+		closeInput();
 	}
 </script>
 
 <footer class="flex h-[5%] w-full items-center justify-between p-3">
-	<p class="justify-self-start">{status}</p>
+	{#if inputOpen}
+		<input
+			on:change={submitInput}
+			bind:this={inputEl}
+			bind:value={inputVal}
+			on:input={onInputChange}
+			autofocus
+			class="justify-self-start bg-transparent"
+		/>
+	{:else}
+		<p class="justify-self-start">{algo.status.status}</p>
+	{/if}
 	<div class="flex h-[5%] items-center gap-5">
 		<p>{algo.swaps}/{algo.comparisons}</p>
 		<button on:click={step} class="bold text-lg text-red-400">Step</button>

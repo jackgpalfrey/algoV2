@@ -1,6 +1,6 @@
 <script lang="ts">
 	import StatusLine from '$lib/components/StatusBar.svelte';
-	import BubbleSort from './algorithm';
+	import BubbleSort, { ElementState } from './algorithm';
 	import { flip } from 'svelte/animate';
 
 	let { arr, max, min } = BubbleSort.makeSortable([5, 4, 3, 2, 4, 1]);
@@ -15,6 +15,12 @@
 	function calcPxHeight(value: number): number {
 		return (value / max) * (main.clientHeight - 50);
 	}
+
+	const stateColorMap = {
+		[ElementState.Default]: 'bg-red-500',
+		[ElementState.Checking]: 'bg-red-300',
+		[ElementState.Complete]: 'bg-green-700'
+	};
 </script>
 
 <title>Bubble Sort</title>
@@ -25,10 +31,10 @@
 	<main class="h-full p-5" bind:this={main}>
 		<ul class="flex h-full items-center justify-between gap-3">
 			{#if main != undefined}
-				{#each algo.data as { id, value, isSelected } (id)}
+				{#each algo.data as { id, value, state } (id)}
 					<li
 						animate:flip={{ duration: 200 }}
-						class={`flex w-full items-center justify-center p-1 ${isSelected ? 'bg-red-300' : 'bg-red-500'}`}
+						class={`flex w-full items-center justify-center p-1 ${stateColorMap[state]}`}
 						style={`height:${calcPxHeight(value)}px;`}
 					>
 						{value}
