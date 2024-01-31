@@ -13,7 +13,7 @@
 	let main: HTMLElement;
 
 	function calcPxHeight(value: number): number {
-		return (value / algo.data.arrMax) * (main.clientHeight - 50);
+		return (value / algo.data.arrMax) * (main.clientHeight - 90) + 40;
 	}
 
 	const stateColorMap: any = {
@@ -30,7 +30,7 @@
 			{#each algo.data.arr as { id, value, state } (id)}
 				<li
 					animate:flip={{ duration: algo.interval / 4 }}
-					class={`flex w-full items-center justify-center rounded-xl p-1 ${stateColorMap[state]}`}
+					class={`flex w-full items-center justify-center rounded-xl p-1 text-2xl ${stateColorMap[state]}`}
 					style={`height:${calcPxHeight(value)}px;`}
 				>
 					{value}
