@@ -1,8 +1,10 @@
 <script lang="ts">
+	import AlgorithmController, {
+		AlgorithmState
+	} from '$lib/algorithmControllers/AlgorithmController';
 	import { onMount } from 'svelte';
-	import type BubbleSort from '../../routes/sorting/bubble/algorithm';
 
-	export let algo: BubbleSort;
+	export let algo: AlgorithmController<any>;
 	export let onUpdate: () => void = () => {};
 
 	algo.onStep = () => {
@@ -16,7 +18,7 @@
 	}
 
 	function toggleStart() {
-		inputVal = algo.isRunning ? ':stop' : ':start';
+		inputVal = algo.state === AlgorithmState.Running ? ':stop' : ':start';
 		submitInput();
 	}
 
@@ -71,8 +73,10 @@
 		<p class="justify-self-start">{algo.status.status}</p>
 	{/if}
 	<div class="flex h-[5%] items-center gap-5">
-		<p>{algo.swaps}/{algo.comparisons}</p>
-		<button on:click={toggleStart} class="bold text-lg text-red-400">{ algo.isRunning ? "Stop": "Start" }</button>
+		<!-- <p>{algo.swaps}/{algo.comparisons}</p> -->
+		<button on:click={toggleStart} class="bold text-lg text-red-400"
+			>{algo.state === AlgorithmState.Running ? 'Stop' : 'Start'}</button
+		>
 		<button on:click={step} class="bold text-lg text-red-400">Step</button>
 	</div>
 </footer>
