@@ -5,10 +5,20 @@
 	export let algo: BubbleSort;
 	export let onUpdate: () => void = () => {};
 
-    function step(){
-        inputVal = ":step"
-        submitInput()
-    }
+	algo.onStep = () => {
+		algo = algo;
+		onUpdate();
+	};
+
+	function step() {
+		inputVal = ':step';
+		submitInput();
+	}
+
+	function toggleStart() {
+		inputVal = algo.isRunning ? ':stop' : ':start';
+		submitInput();
+	}
 
 	// INPUT STUFF
 	onMount(() => {
@@ -42,8 +52,7 @@
 
 	function submitInput() {
 		algo.exec(inputVal.substring(1));
-        onUpdate();
-        algo = algo;
+		onUpdate();
 		closeInput();
 	}
 </script>
@@ -63,6 +72,7 @@
 	{/if}
 	<div class="flex h-[5%] items-center gap-5">
 		<p>{algo.swaps}/{algo.comparisons}</p>
+		<button on:click={toggleStart} class="bold text-lg text-red-400">{ algo.isRunning ? "Stop": "Start" }</button>
 		<button on:click={step} class="bold text-lg text-red-400">Step</button>
 	</div>
 </footer>
