@@ -6,5 +6,6 @@
 	<ul class="list-disc pl-6">
 		<li><a class="text-red-400" href="sorting/bubble">Bubble Sort</a></li>
 		<li><a class="text-red-400" href="sorting/insertion">Insertion Sort</a></li>
+		<li><a class="text-red-400" href="sorting/selection">Selection Sort</a></li>
 	</ul>
 </main>
