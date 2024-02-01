@@ -8,7 +8,7 @@ class CommandController {
 	public status: AlgorithmStatus = undefined as any;
 	private commandRegisters: CommandRegisters = {};
 
-    constructor(){
+	constructor() {
 		this.register('status', (_, ...args: string[]) => {
 			this.status = { status: args.join(' ') };
 		});
@@ -16,8 +16,7 @@ class CommandController {
 		this.register('clear', (..._: string[]) => {
 			this.status = { status: '' };
 		});
-    }
-
+	}
 
 	public register(commandName: string, handler: (...args: string[]) => void) {
 		this.commandRegisters[commandName] = handler;

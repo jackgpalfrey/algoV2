@@ -13,6 +13,7 @@ export enum AlgorithmState {
 
 export class AlgorithmController<Data> extends CommandController {
     public data: Data;
+    public config: { [key: string]: any } = {};
 
     public algoInstance: AlgorithmReturn = undefined as any;
     public state: AlgorithmState = undefined as any;
@@ -22,9 +23,9 @@ export class AlgorithmController<Data> extends CommandController {
     public onStep: () => void = () => { };
 
     public interval: number = 1000;
-    public minimumInterval = 30;
+    public minimumInterval = 0;
 
-    public constructor(data: T) {
+    public constructor(data: Data) {
         super();
 
         this.data = data;
@@ -54,6 +55,14 @@ export class AlgorithmController<Data> extends CommandController {
         });
     }
 
+    public setConfig(key: string, value: any) {
+        this.config[key] = value;
+    }
+
+    public getConfig(key: string): any {
+        return this.config[key];
+    }
+
     protected setup(): void { }
     protected *algorithm(): AlgorithmReturn { }
 
@@ -80,7 +89,7 @@ export class AlgorithmController<Data> extends CommandController {
             this.status = value;
         }
 
-        console.log(this.data)
+        console.log(this.data);
         this.onStep();
         return this.status;
     }
@@ -94,7 +103,7 @@ export class AlgorithmController<Data> extends CommandController {
         this.state = AlgorithmState.Started;
     }
 
-    public loopStep() {
+    public loopStep(): void {
         if (this.state != AlgorithmState.Running) return;
         this.step();
 

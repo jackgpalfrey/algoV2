@@ -2,6 +2,7 @@
 	import { flip } from 'svelte/animate';
 	import { ElementState } from '../../routes/sorting/insertion/algorithm';
 	import type { SortingAlgorithm } from '$lib/algorithmControllers/SortingAlgorithm';
+	import { onMount } from 'svelte';
 
 	export let algo: SortingAlgorithm<any, {}>;
 	export let onUpdate: () => void = () => {};
@@ -12,8 +13,17 @@
 
 	let main: HTMLElement;
 
+	onMount(() => {
+		algo.exec('rand 6');
+	});
+
 	function calcPxHeight(value: number): number {
 		return (value / algo.data.arrMax) * (main.clientHeight - 90) + 40;
+	}
+
+	function getContent(value: number): string | number {
+		if (!algo.getConfig('numbers')) return '';
+		return value;
 	}
 
 	const stateColorMap: any = {
@@ -24,16 +34,16 @@
 	};
 </script>
 
-<main class="h-full overflow-hidden p-5" bind:this={main}>
-	<ul class="flex h-full items-center justify-between gap-3">
+<main class="h-full overflow-y-hidden p-5" bind:this={main}>
+	<ul class={`flex h-full items-${algo.getConfig('barPos')} justify-between gap-2`}>
 		{#if main != undefined}
 			{#each algo.data.arr as { id, value, state } (id)}
 				<li
 					animate:flip={{ duration: algo.interval / 4 }}
-					class={`flex w-full items-center justify-center rounded-xl p-1 text-2xl ${stateColorMap[state]}`}
+					class={`bar flex w-full items-center justify-center rounded-md text-2xl ${stateColorMap[state]}`}
 					style={`height:${calcPxHeight(value)}px;`}
 				>
-					{value}
+					{getContent(value)}
 				</li>
 			{/each}
 		{/if}

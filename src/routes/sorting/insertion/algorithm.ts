@@ -1,3 +1,4 @@
+import { swap } from '$lib/algoHelpers';
 import { type AlgorithmReturn } from '$lib/algorithmControllers/AlgorithmController';
 import { SortingAlgorithm } from '$lib/algorithmControllers/SortingAlgorithm';
 
@@ -26,9 +27,7 @@ class InsertionSort extends SortingAlgorithm<ElementState, {}> {
 			yield { status: `Comparing with ${arr[j].value}` };
 
 			while (j >= 0 && arr[j].value > key.value) {
-				const tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
+				swap(arr, j, j + 1);
 				yield { status: `Swapped with ${2}` };
 				arr[j + 1].state = ElementState.Default;
 

@@ -1,3 +1,4 @@
+import { swap } from '$lib/algoHelpers';
 import { type AlgorithmReturn } from '$lib/algorithmControllers/AlgorithmController';
 
 import { SortingAlgorithm } from '$lib/algorithmControllers/SortingAlgorithm';
@@ -23,7 +24,6 @@ class BubbleSort extends SortingAlgorithm<
 	}
 
 	*algorithm(): AlgorithmReturn {
-		console.log(this.data);
 		const arr = this.data.arr;
 		let n = arr.length;
 
@@ -33,14 +33,15 @@ class BubbleSort extends SortingAlgorithm<
 			swapped = false;
 			for (let j = 0; j < n - i - 1; j++) {
 				this.data.comparisons++;
+                
 				let el1 = arr[j];
 				let el2 = arr[j + 1];
+
 				el1.state = el2.state = ElementState.Checking;
 				yield { status: `Comparing ${el1.value} and ${el2.value}` };
+
 				if (el1.value > el2.value) {
-					let tmp = el1.value;
-					el1.value = el2.value;
-					el2.value = tmp;
+					swap(arr, j, j + 1);
 					swapped = true;
 					this.data.swaps++;
 					yield { status: `Swapped ${el2.value} and ${el1.value}` };
@@ -57,7 +58,7 @@ class BubbleSort extends SortingAlgorithm<
 
 			if (!swapped) break;
 		}
-		arr[0].state = ElementState.Complete;
+		arr.forEach((el) => (el.state = ElementState.Complete));
 	}
 }
 

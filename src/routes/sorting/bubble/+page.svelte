@@ -4,7 +4,7 @@
 	import TitleBar from '$lib/components/TitleBar.svelte';
 	import BubbleSort from './algorithm';
 
-	let algo = new BubbleSort([5,12,15,3,4,20]);
+	let algo = new BubbleSort([5, 12, 15, 3, 4, 20]);
 
 	function onUpdate() {
 		algo = algo;
