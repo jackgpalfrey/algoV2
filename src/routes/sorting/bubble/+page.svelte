@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { AlgorithmState } from '$lib/algorithmControllers/AlgorithmController';
 	import BarView from '$lib/components/BarView.svelte';
+	import SLineButton from '$lib/components/SLineButton.svelte';
 	import StatusLine from '$lib/components/StatusBar.svelte';
 	import TitleBar from '$lib/components/TitleBar.svelte';
 	import BubbleSort from './algorithm';
@@ -15,8 +16,9 @@
 <TitleBar breadcrumb={['Sorting', 'Bubble Sort']} />
 <BarView {algo} onUpdate={algo.onUpdate} />
 <StatusLine {algo} onUpdate={algo.onUpdate}>
-	<button on:click={() => algo.exec('toggleStart')} class="bold text-lg text-red-400"
-		>{algo.state === AlgorithmState.Running ? 'Stop' : 'Start'}</button
-	>
-	<button on:click={() => algo.exec('step')} class="bold text-lg text-red-400">Step</button>
+	<SLineButton
+		text={algo.state === AlgorithmState.Running ? 'Stop' : 'Start'}
+		action={() => algo.exec('toggleStart')}
+	/>
+	<SLineButton text="Step" action={() => algo.exec('step')} />
 </StatusLine>
