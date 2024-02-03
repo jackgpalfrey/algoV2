@@ -8,6 +8,8 @@ class CommandController {
 	public status: AlgorithmStatus = undefined as any;
 	private commandRegisters: CommandRegisters = {};
 
+	public onUpdate: () => void = () => {};
+
 	constructor() {
 		this.register('status', (_, ...args: string[]) => {
 			this.status = { status: args.join(' ') };
@@ -33,6 +35,7 @@ class CommandController {
 		}
 
 		this.commandRegisters[name](...splitInput);
+        this.onUpdate()
 	}
 }
 

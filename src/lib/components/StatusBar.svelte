@@ -1,26 +1,10 @@
 <script lang="ts">
-	import AlgorithmController, {
-		AlgorithmState
-	} from '$lib/algorithmControllers/AlgorithmController';
+	import AlgorithmController from '$lib/algorithmControllers/AlgorithmController';
 	import { onMount } from 'svelte';
+	import ExplorerPanel from './ExplorerPanel.svelte';
 
 	export let algo: AlgorithmController<any>;
 	export let onUpdate: () => void = () => {};
-
-	algo.onStep = () => {
-		algo = algo;
-		onUpdate();
-	};
-
-	function step() {
-		inputVal = ':step';
-		submitInput();
-	}
-
-	function toggleStart() {
-		inputVal = algo.state === AlgorithmState.Running ? ':stop' : ':start';
-		submitInput();
-	}
 
 	// INPUT STUFF
 	onMount(() => {
@@ -57,9 +41,14 @@
 		onUpdate();
 		closeInput();
 	}
+
+	let isExplorerOpen = false;
 </script>
 
-<footer class="flex h-[5%] w-full items-center justify-between p-3">
+{#if isExplorerOpen}
+	<ExplorerPanel />
+{/if}
+<footer class="z-20 flex h-[5%] w-full items-center justify-between p-3">
 	{#if inputOpen}
 		<input
 			on:change={submitInput}
@@ -73,10 +62,6 @@
 		<p class="justify-self-start">{algo.status.status}</p>
 	{/if}
 	<div class="flex h-[5%] items-center gap-5">
-		<!-- <p>{algo.swaps}/{algo.comparisons}</p> -->
-		<button on:click={toggleStart} class="bold text-lg text-red-400"
-			>{algo.state === AlgorithmState.Running ? 'Stop' : 'Start'}</button
-		>
-		<button on:click={step} class="bold text-lg text-red-400">Step</button>
+		<slot />
 	</div>
 </footer>
