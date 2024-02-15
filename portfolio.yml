@@ -3,7 +3,7 @@ desc: An algorithm visualisation tool built with svelte
 link: algoV.app
 tech:
   - id: web-ui/svelte
-  - desc: Svelte for the UI.
+    desc: Svelte for the UI.
   - id: svelte/svelte-kit
   - id: css/tailwind
   - id: js/typescript
